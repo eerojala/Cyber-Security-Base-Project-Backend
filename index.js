@@ -5,7 +5,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 
 const messagesRouter = require('./controllers/messages')
-const usersRouter = requrie('./controllers/users')
+const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 const defaultRouter = require('./controllers/default')
 
