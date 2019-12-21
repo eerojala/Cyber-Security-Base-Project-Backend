@@ -1,0 +1,40 @@
+{
+  "name": "cyber_security_base_project",
+  "version": "1.0.0",
+  "description": "project for the course cyber security base",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+	"start": "node index.js",
+	"watch": "nodemon index.js",
+	"lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eerojala/Cyber-Security-Base-Project-Backend.git"
+  },
+  "author": "Eero Ojala",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eerojala/Cyber-Security-Base-Project-Backend/issues"
+  },
+  "homepage": "https://github.com/eerojala/Cyber-Security-Base-Project-Backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "cross-env": "^6.0.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.8.1",
+    "npm": "^6.13.4",
+    "save-dev": "0.0.1-security"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
