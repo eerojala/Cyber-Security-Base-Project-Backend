@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const messageSchema = new mongoose.Schema({
+    title: String,
     content: String,
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 })
@@ -8,6 +9,7 @@ const messageSchema = new mongoose.Schema({
 messageSchema.statics.format = (message) => {
     return {
         id: message.id,
+        title: message.title,
         content: message.content,
         user: message.user
     }

@@ -2,6 +2,18 @@ const bcryptjs = require('bcryptjs')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 
+usersRouter.get('/', async (request, response) => {
+    try {
+        const users = await User.find({})
+
+        response.json(users.Map(User.format))
+    } catch (exception) {
+        console.log(exception)
+
+        response.status(500).json({ error: exception }) // Detailed error message
+    }
+})
+
 usersRouter.post('/', async (request, response) => {
     try {
         const username = request.body.username
