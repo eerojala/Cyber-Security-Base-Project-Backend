@@ -10,20 +10,20 @@ const getLoggedInUserId = async (token) => {
 
     const decodedToken = await jwt.verify(token, process.env.SECRET)
 
-    if (decodedToken.id) {
+    if (!decodedToken.id) {
         return null
     }
-
+    
     return decodedToken.id
 }
 
 messagesRouter.get('/', async (request, response) => {
     try {
         const messages = await Message
-        .find({})
-        .populate('user', { username: 1 })
+            .find({})
+            .populate('user', { username: 1 })
 
-        .response.json(messages.map(Message.format))
+        response.json(messages.map(Message.format))
     } catch (exception) {
         console.log(exception)
         response.status(500).json({ error: exception}) // Detailed error message
@@ -66,7 +66,11 @@ messagesRouter.post('/', async (request, response) => {
 
         await user.save()
 
-        response.json(Message.format(savedMessage))
+        const fetchedMessage = await Message
+            .findById(savedMessage.id)
+            .populate('user', { username: 1 })
+
+        response.json(Message.format(fetchedMessage))
     } catch (exception) {
         console.log(exception)
         response.status(500).json({ error: exception }) // Detailed error message
@@ -75,8 +79,10 @@ messagesRouter.post('/', async (request, response) => {
 
 messagesRouter.put('/:id', async (request, response) => {
     try {
-        const message = await Message.findById(request.params.id)
+        const id = request.params.id
 
+        const message = await Message.findById(id)
+ 
         if (!message) {
             return response.status(404).json({ error: 'No message found matching given id' })
         }
@@ -86,12 +92,15 @@ messagesRouter.put('/:id', async (request, response) => {
         //     return response.status(401).json({ error: 'Wrong user logged in'})
         // }
 
-       
-        const chagesToMessage = Object.assign({}, request.body)
+        const changesToMessage = Object.assign({}, request.body)
 
-        const updatedMessage = await Message.findByIdAndUpdate(request.params.id, changesToMessage)
+        await Message.findByIdAndUpdate(id, changesToMessage)
 
-        response.json(Message.format(updatedMessage))
+        const fetchedMessage = await Message
+            .findById(id)
+            .populate('user', { username: 1 })
+
+        response.json(Message.format(fetchedMessage))
     } catch (exception) {
         console.log(exception)
         response.status(500).json({ error: exception }) // Detailed error messages

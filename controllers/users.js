@@ -6,7 +6,7 @@ usersRouter.get('/', async (request, response) => {
     try {
         const users = await User.find({})
 
-        response.json(users.Map(User.format))
+        response.json(users.map(User.format))
     } catch (exception) {
         console.log(exception)
 
@@ -20,7 +20,7 @@ usersRouter.post('/', async (request, response) => {
 
         const duplicateUsername = await User.findOne({ username: username })
 
-        if (duplicateUsername === null) {
+        if (duplicateUsername !== null) {
             return response.status(403).json({ error: 'This username has already been taken, please select another one' })
         }
 
