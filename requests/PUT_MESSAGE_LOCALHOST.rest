@@ -1,0 +1,7 @@
+PUT http://localhost:3001/api/messages/5e00e58198a4c80004ec8973
+content-type: application/json
+
+{
+    "title": "Edited title",
+    "content": "Edited content1"
+}
