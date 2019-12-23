@@ -28,9 +28,11 @@ usersRouter.post('/', async (request, response) => {
 
         // Insert password validation here
         
-        // const salt = await bcryptjs.genSaltSync(10) Generating the salt
+        // Salt generation
+        // const salt = await bcryptjs.genSaltSync(10) 
 
-        // const passwordHash = await bcryptjs.hashSync() Hashing the password
+        // Password hashing
+        // const passwordHash = await bcryptjs.hashSync(password, salt) 
 
         // password = passwordHash
         
