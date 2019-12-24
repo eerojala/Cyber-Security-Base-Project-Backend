@@ -27,59 +27,62 @@ On windows, it should be pretty simple if you are able to run as admin in the co
 
 
 FLAW 1:
-Description: Broken access control
+Description: Broken access control  
 In the app, anyone is able to edit messages, even though it should be restricted to user who originally posted the message. Even though the frontend of the app does not generate the edit link for other users, anyone is able to edit the message through a HTTP PUT -request. If you have Visual Studio Code installed, you can send the template HTTP-requests I made on the /requests folder using the rest client plugin https://marketplace.visualstudio.com/items?itemName=humao.rest-client . Otherwise you might use postman or some other program which allows the user to send HTTP-requests.
 
-How to fix: Add a check in the backend to make sure the sender of the HTTP PUT-request is the same user as the original poster. There is a check commented in /controllers/messages.js at lines 90-93 that should be sufficient.
+How to fix:  
+Add a check in the backend to make sure the sender of the HTTP PUT-request is the same user as the original poster. There is a check commented in /controllers/messages.js at lines 90-93 that should be sufficient.
 
 
 
 FLAW 2: 
-Description: Components with known vulnerabilities / Security misconfiguration
+Description: Components with known vulnerabilities / Security misconfiguration  
 Both the frontend and backend are using outdated dependencies which present security risks to the application. 
 
-npm: 
+npm:  
 Versions prior to 16.13.3 allow a package publisher to access and modify arbitrary files on a user’s system when the package is installed. This does not affect people who are simply visiting the site, but it allows a malicious actor to distribute a version of the application which is able to harm the victim’s system when downloaded.
 
-Mongoose:
-Versions prior to 5.7.5 have a vulnerability that allows an access control bypass. If an attack injects a ‘bsontype’ attribute to a query object, Mongoose would ignore the query object, allowing the attacker into an another user’s account or bypass the token verification during a password reset.
+Mongoose:  
+Versions prior to 5.7.5 have a vulnerability that allows an access control bypass. If an attack injects a ‘bsontype’ attribute to a query object, Mongoose would ignore the query object, allowing the attacker access into an another user’s account or bypass the token verification during a password reset.
 
-axios:
-Versions prior to 0.18.1 have a vulnerability that allows the application to continue accepting content after the supposed maximum content length has been exceeded. This would have allowed an attacker to cause a denial of service by crashing the application.
+axios:  
+Versions prior to 0.18.1 have a vulnerability that allows the application to continue accepting content after the supposed maximum content length has been exceeded. This would have allowed an attacker to cause a denial of service by crashing the application on the server
 
-How to fix:
+How to fix:  
 Update the versions of these dependencies in the package.lock located in the roots of both repositories. You can do this by simply overwriting the version numbers with versions that have fixed these flaws. Then run the npm install command.
 
 
 
 FLAW 3:
-Description: Broken Authentication
+Description: Broken Authentication  
 The application permits the user to register with any kind of password, even passwords known to be weak. These passwords are especially vulnerable to automated attacks where the attackers try to bruteforce logins with known usernames and lists containing the most commonly used passwords. The application also has absolutely no precautions to prevent these automated attacks
 
-How to fix:
-Create a password validation method in the post function in  /controllers/users.js. A valid password could require criteria such as minimum length of 8 characters, contain at least one capital letter, contain at least one special character, etc.. 
+How to fix:  
+Create a password validation method in the post function in  /controllers/users.js. A valid password could require criteria such as minimum length of 8 characters, contain at least one capital letter, contain at least one special character, etc..  
+Although nowadays longer passwords are considered stronger, having the above requirements would be a good place to start in order to provide a better defence against automated attacks which check commonly used passwords  
 One could also create functions which would prevent automated brute-force attacks, such as examples illustrated here: https://medium.com/@animirr/brute-force-protection-node-js-examples-cd58e8bd9b8d?
 
 
-FLAW 4:
+FLAW 4:  
 Description: Cross-Site Scripting (XSS)
-For the frontend the application uses React, which is generally considered safe against XSS attacks. This is due to the fact that string variables in views are escaped automatically and event handlers are given functions instead of strings that could contain malicious code. React is not completely immune to XSS however. When viewing an individual message the site renders the message through a ‘dangerouslySetInnerHTML’ parameter in a div element (cyber_security_base_project/src/components/MessageView.js, line 21). If a malicious user would input javascript code, the site would execute it as it renders the message. You can see this in the message with the title of ‘XSS example’ which has a message of <img onerror='alert("Hacked!")' src='invalid-image' />, assuming no other peer reviewer has edited it. Other examples of potential XSS exploits in react can be read in here https://stackoverflow.com/questions/33644499/what-does-it-mean-when-they-say-react-is-xss-protected
+For the frontend the application uses React, which is generally considered safe against XSS attacks. This is due to the fact that string variables in views are escaped automatically and event handlers are given functions instead of strings that could contain malicious code. React is not completely immune to XSS however. When viewing an individual message the site renders the message through a ‘dangerouslySetInnerHTML’ parameter in a div element (cyber_security_base_project/src/components/MessageView.js, line 21). If a malicious user would input javascript code, the site would execute it as it renders the message. You can see this in the message with the title of ‘XSS example’ which has a message of "<img onerror='alert("Hacked!")' src='invalid-image' />", assuming no other peer reviewer has edited it. Other examples of potential XSS exploits in react can be read in here https://stackoverflow.com/questions/33644499/what-does-it-mean-when-they-say-react-is-xss-protected
 
-Fix: Check the input string for javascript or just use a regular paragraph element which does not allow the execution of javascript.
+Fix:  
+Check the input string for javascript or just use a regular paragraph element which does not allow the execution of javascript.
 
 
 FLAW 5: 
-Description: Sensitive data exposure / Broken authentication
+Description: Sensitive data exposure / Broken authentication  
 Passwords are stored as plaintext in the database. This would mean that if an attacker gained access to the application’s database, they would also be able to see every user’s password without having to resort to brute-forcing individual username and password combinations. 
 
-How to fix: 
+How to fix:  
 Hash the passwords, preferably with salt so in case a hashed password from the database is cracked, it does not compromise other identical passwords in the database. You can read more about salt here: https://en.wikipedia.org/wiki/Salt_(cryptography)
 I have implemented password hashing and salting in the project code which have been commented. Creating a salted password hash can be found in the backend repository at /controllers/users.js at lines 31-35 and unhashing the password for login can be found at /controllers/login.js at lines 16-18
 
 
-FLAW 6:
-Description: Sensitive data exposure / Security misconfiguration
+FLAW 6:  
+Description: Sensitive data exposure / Security misconfiguration  
 The file .env contains the database link and token secret which should not be visible in a public repository. The database link allows access to the database which in combination with the above mentioned plaintext flaw, would be perilous to the users’ security.
 
-How to fix:
+How to fix:  
 Remove the .env file from the remote repository and add it to the .gitignore file so you can have the file locally but not visible to everyone viewing the repository on github.

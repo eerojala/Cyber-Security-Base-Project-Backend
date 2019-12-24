@@ -10,7 +10,7 @@ usersRouter.get('/', async (request, response) => {
     } catch (exception) {
         console.log(exception)
 
-        response.status(500).json({ error: exception }) // Detailed error message
+        response.status(500).json({ error: exception })
     }
 })
 
@@ -43,7 +43,7 @@ usersRouter.post('/', async (request, response) => {
         response.json(User.format(user))
     } catch (exception) {
         console.log(exception)
-        response.status(500).json({ error : exception }) // Detailed error message?
+        response.status(500).json({ error : exception })
     }
 })
 

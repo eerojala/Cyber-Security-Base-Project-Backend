@@ -26,7 +26,7 @@ messagesRouter.get('/', async (request, response) => {
         response.json(messages.map(Message.format))
     } catch (exception) {
         console.log(exception)
-        response.status(500).json({ error: exception}) // Detailed error message
+        response.status(500).json({ error: exception}) 
     }
 })
 
@@ -73,7 +73,7 @@ messagesRouter.post('/', async (request, response) => {
         response.json(Message.format(fetchedMessage))
     } catch (exception) {
         console.log(exception)
-        response.status(500).json({ error: exception }) // Detailed error message
+        response.status(500).json({ error: exception })
     }
 })
 
@@ -103,7 +103,7 @@ messagesRouter.put('/:id', async (request, response) => {
         response.json(Message.format(fetchedMessage))
     } catch (exception) {
         console.log(exception)
-        response.status(500).json({ error: exception }) // Detailed error messages
+        response.status(500).json({ error: exception })
     }
 })
 

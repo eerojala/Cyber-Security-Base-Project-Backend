@@ -30,7 +30,7 @@ loginRouter.post('/', async (request, response) => {
         response.status(200).send({ token, username: user.username, id: user._id })
     } catch (exception) {
         console.log(exception)
-        response.status(500).json({ error: exception }) // Detailed error message
+        response.status(500).json({ error: exception })
     }
 })
 
