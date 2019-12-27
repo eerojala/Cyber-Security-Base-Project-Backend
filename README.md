@@ -12,7 +12,7 @@ The site has two ready-made accounts test1 and test2 with passwords 12345 and qw
 INSTRUCTIONS:
 1. If you haven’t already, install git to your computer. A guide that may or may not work: https://www.linode.com/docs/development/version-control/how-to-install-git-on-linux-mac-and-windows/
 
-2. Download/install node and npm from https://nodejs.org/en/ more detailed installation instructions in finnish at https://github.com/fullstack-hy2019/misc/blob/master/asennusohjeita.md
+2. Download/install node from https://nodejs.org/en/download/ more detailed installation instructions in finnish can be found at https://github.com/fullstack-hy2019/misc/blob/master/asennusohjeita.md
 
 On windows, it should be pretty simple if you are able to run as admin in the computer you are using. If you aren’t, here are the above instructions translated to english:
     1. Download windows binary from https://nodejs.org/en/download/
