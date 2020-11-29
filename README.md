@@ -1,5 +1,7 @@
 # Cyber-Security-Base-Project-Backend
 
+UPDATE: Dependencies were updated at 29.11.2020 when migrating the database from mlabs to MongoDB Atlas
+
 LINK: https://github.com/eerojala/Cyber-Security-Base-Project-Backend (backend, cloning just this repository is enough)
 https://github.com/eerojala/Cyber-Security-Base-Project-Frontend (frontend, you don’t need to clone this one since the backend repository already has a compressed build version of the frontend)
 
